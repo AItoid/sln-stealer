@@ -1,2 +1,2 @@
 ### sln-stealer
-Test.
+Search all drives for projects and create copies of them.
