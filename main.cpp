@@ -77,9 +77,13 @@ void find_and_copy_sln_files(const std::string& directory, const std::string& de
                 // Ignore directories that are Microsoft projects
                 if (directory.find("(x86)\\Microsoft Visual Studio") == std::string::npos)
                 {
-                    // Copy the entire directory containing the .sln or .vcxproj file
-                    printf("[+] Copied %s\\%s\n", directory.c_str(), file_name.c_str());
-                    copy_directory(directory, dest_path);
+                    // Check if the current directory is not within the copied directory
+                    if (directory.find(dest_root) == std::string::npos)
+                    {
+                        // Copy the entire directory containing the .sln or .vcxproj file
+                        printf("[+] Copied %s\\%s\n", directory.c_str(), file_name.c_str());
+                        copy_directory(directory, dest_path);
+                    }
                 }
             }
         }
@@ -114,23 +118,6 @@ int main()
 
             // Search drive.
             find_and_copy_sln_files(drive, stored_location);
-        }
-    }
-
-    int seconds_passed = 0;
-
-    printf("Closing in 5 seconds");
-    while (true)
-    {
-        if (seconds_passed >= 5)
-            break;
-
-        static DWORD last_tick = GetTickCount();
-        if (GetTickCount() >= last_tick + 1000)
-        {
-            seconds_passed++;
-            printf(".");
-            last_tick = GetTickCount();
         }
     }
 
